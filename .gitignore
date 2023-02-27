@@ -1,0 +1,15 @@
+.history/
+.vscode/
+.idea/
+
+target/
+build/
+bin/
+
+*.iml
+
+.terraform/
+*.tfvars*
+*.tfstate*
+.terraformrc
+terraform.rc
