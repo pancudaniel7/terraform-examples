@@ -1,11 +1,12 @@
 provider "aws" {
   profile = var.profile
-  region  = var.region-master
-  alias   = "region-master"
+  region  = var.region_master
+  alias   = "master"
 }
 
 provider "aws" {
   profile = var.profile
-  region  = var.region-worker
-  alias   = "region-worker"
+  region  = var.region_worker
+  alias   = "worker"
+  
 }
