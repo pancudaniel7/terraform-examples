@@ -3,13 +3,12 @@ variable "profile" {
   default = "default"
 }
 
-variable "region-master" {
+variable "region_master" {
   type    = string
   default = "eu-central-1"
 }
 
-variable "region-worker" {
+variable "region_worker" {
   type    = string
-  default = "eu-west-2"
+  default = "eu-west-1"
 }
-
