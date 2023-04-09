@@ -9,7 +9,6 @@ bin/
 *.iml
 
 .terraform/
-*.tfvars*
 *.tfstate*
 .terraformrc
 terraform.rc
