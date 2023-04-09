@@ -5,5 +5,16 @@ terraform {
   }
 }
 
+module "network_master" {
+  source = "./modules/network/master"
+  providers = {
+    aws = aws.master
+  }
+}
 
-
+module "network_worker" {
+  source = "./modules/network/worker"
+  providers = {
+    aws = aws.worker
+  }
+}
