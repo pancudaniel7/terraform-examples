@@ -12,3 +12,4 @@ variable "region_worker" {
   type    = string
   default = "eu-west-1"
 }
+
