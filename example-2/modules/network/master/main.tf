@@ -10,7 +10,7 @@ resource "aws_vpc" "vpc_master" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = var.env_name
+    Name = var.profile
   }
 }
 
@@ -19,7 +19,7 @@ resource "aws_internet_gateway" "igw_master_frankfurt" {
   vpc_id   = aws_vpc.vpc_master.id
 
   tags = {
-    Name = var.env_name
+    Name = var.profile
   }
 }
 
