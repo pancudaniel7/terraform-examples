@@ -10,7 +10,7 @@ resource "aws_vpc" "vpc_worker" {
   enable_dns_hostnames = true
 
   tags = {
-    Env =  var.profile
+    Env =  var.env
   }
 }
 
@@ -19,7 +19,7 @@ resource "aws_internet_gateway" "igw_worker" {
   vpc_id   = aws_vpc.vpc_worker.id
 
   tags = {
-    Env =  var.profile
+    Env =  var.env
   }
 }
 

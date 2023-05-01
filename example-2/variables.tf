@@ -1,4 +1,4 @@
-variable "profile" {
+variable "env" {
   type    = string
   default = "default"
 }
@@ -12,4 +12,3 @@ variable "region_worker" {
   type    = string
   default = "eu-west-1"
 }
-

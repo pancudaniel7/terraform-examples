@@ -1,11 +1,11 @@
 provider "aws" {
-  profile = var.profile
+  profile = "default"
   region  = var.region_master
   alias   = "master"
 }
 
 provider "aws" {
-  profile = var.profile
+  profile = "default"
   region  = var.region_worker
   alias   = "worker"
 }
