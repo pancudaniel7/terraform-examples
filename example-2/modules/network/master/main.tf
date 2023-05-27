@@ -69,7 +69,7 @@ resource "aws_vpc_peering_connection_accepter" "vpc_master_peering_accepter" {
   }
 }
 
-resource "aws_route_table" "routing_table_master" {
+resource "aws_route_table" "master_routing_table" {
   provider = aws
   vpc_id   = aws_vpc.vpc_master.id
 
@@ -91,3 +91,34 @@ resource "aws_route_table" "routing_table_master" {
     Environment = var.env
   }
 }
+
+resource "aws_main_route_table_association" "master_routing_table_association" {
+  provider = aws
+  vpc_id = aws_vpc.vpc_master.id
+  route_table_id = aws_route_table.master_routing_table.id
+}
+
+
+resource "aws_route_table" "worker_routing_table" {
+  provider = aws
+  vpc_id     = var.vpc_worker_id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = var.igw_worker_id
+  }
+  
+  route {
+    cidr_block = "10.0.1.0/24"
+    gateway_id = var.subnet_1_worker_id
+  }
+  
+  lifecycle {
+    ignore_changes = all
+  }
+
+  tags = {
+    Environment = var.env
+  }
+}
+
+

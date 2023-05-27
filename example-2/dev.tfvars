@@ -1,3 +1,3 @@
 env           = "dev"
-region_master = "eu-central-1"
-region_worker = "eu-west-1"
+region_master = "eu-central-1" // Frankfurt
+region_worker = "eu-west-1"    // Ireland
