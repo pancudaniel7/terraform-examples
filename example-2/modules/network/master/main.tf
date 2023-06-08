@@ -3,7 +3,7 @@ data "aws_availability_zones" "azs" {
 }
 
 resource "aws_vpc" "vpc_master" {
-  provider   = aws
+  provider   = aws.master
   cidr_block = "10.0.0.0/16"
 
   enable_dns_support   = true
@@ -15,7 +15,7 @@ resource "aws_vpc" "vpc_master" {
 }
 
 resource "aws_internet_gateway" "igw_master_frankfurt" {
-  provider = aws
+  provider = aws.master
   vpc_id   = aws_vpc.vpc_master.id
 
   tags = {
@@ -24,7 +24,7 @@ resource "aws_internet_gateway" "igw_master_frankfurt" {
 }
 
 resource "aws_subnet" "subnet_master_1" {
-  provider          = aws
+  provider          = aws.master
   availability_zone = element(data.aws_availability_zones.azs.names, 0)
   vpc_id            = aws_vpc.vpc_master.id
   cidr_block        = "10.0.1.0/24"
@@ -35,7 +35,7 @@ resource "aws_subnet" "subnet_master_1" {
 }
 
 resource "aws_subnet" "subnet_master_2" {
-  provider          = aws
+  provider          = aws.master
   availability_zone = element(data.aws_availability_zones.azs.names, 1)
   vpc_id            = aws_vpc.vpc_master.id
   cidr_block        = "10.0.2.0/24"
@@ -45,13 +45,13 @@ resource "aws_subnet" "subnet_master_2" {
   }
 }
 
-# VPC peering 
+# VPC peering
 resource "aws_vpc_peering_connection" "master_peering_connection" {
-  provider = aws
-
+  provider = aws.master
   vpc_id      = aws_vpc.vpc_master.id
+  
   peer_vpc_id = var.vpc_worker_id
-  peer_region = var.master_region
+  peer_region = var.worker_region
 
   tags = {
     Environment = var.env
@@ -59,7 +59,7 @@ resource "aws_vpc_peering_connection" "master_peering_connection" {
 }
 
 resource "aws_vpc_peering_connection_accepter" "vpc_master_peering_accepter" {
-  provider = aws
+  provider = aws.worker
 
   vpc_peering_connection_id = aws_vpc_peering_connection.master_peering_connection.id
   auto_accept               = true
@@ -70,7 +70,7 @@ resource "aws_vpc_peering_connection_accepter" "vpc_master_peering_accepter" {
 }
 
 resource "aws_route_table" "master_routing_table" {
-  provider = aws
+  provider = aws.master
   vpc_id   = aws_vpc.vpc_master.id
 
   route {
@@ -93,15 +93,16 @@ resource "aws_route_table" "master_routing_table" {
 }
 
 resource "aws_main_route_table_association" "master_routing_table_association" {
-  provider = aws
+  provider = aws.master
   vpc_id = aws_vpc.vpc_master.id
   route_table_id = aws_route_table.master_routing_table.id
 }
 
 
 resource "aws_route_table" "worker_routing_table" {
-  provider = aws
+  provider   = aws.worker
   vpc_id     = var.vpc_worker_id
+  
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = var.igw_worker_id
@@ -109,7 +110,7 @@ resource "aws_route_table" "worker_routing_table" {
   
   route {
     cidr_block = "10.0.1.0/24"
-    gateway_id = var.subnet_1_worker_id
+    vpc_peering_connection_id = aws_vpc_peering_connection.master_peering_connection.id
   }
   
   lifecycle {
@@ -119,6 +120,12 @@ resource "aws_route_table" "worker_routing_table" {
   tags = {
     Environment = var.env
   }
+}
+
+resource "aws_main_route_table_association" "worker_routing_table_association" {
+  provider = aws.worker
+  vpc_id = var.vpc_worker_id
+  route_table_id = aws_route_table.worker_routing_table.id
 }
 
 

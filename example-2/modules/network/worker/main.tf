@@ -3,7 +3,7 @@ data "aws_availability_zones" "azs" {
 }
 
 resource "aws_vpc" "vpc_worker" {
-  provider   = aws
+  provider   = aws.worker
   cidr_block = "192.168.0.0/16"
 
   enable_dns_support   = true
@@ -15,7 +15,7 @@ resource "aws_vpc" "vpc_worker" {
 }
 
 resource "aws_internet_gateway" "igw_worker" {
-  provider = aws
+  provider = aws.worker
   vpc_id   = aws_vpc.vpc_worker.id
 
   tags = {
@@ -24,7 +24,7 @@ resource "aws_internet_gateway" "igw_worker" {
 }
 
 resource "aws_subnet" "subnet_worker_1" {
-  provider   = aws
+  provider   = aws.worker
   vpc_id     = aws_vpc.vpc_worker.id
   cidr_block = "192.168.1.0/24"
 }
