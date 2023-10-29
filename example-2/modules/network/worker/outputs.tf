@@ -8,7 +8,7 @@ output "igw_id" {
   description = "Worker internet gateway id"
 }
 
-output "subnet_1_id" {
+output "subnet_worker1_id" {
   value = aws_subnet.subnet_worker_1.id
   description = "Worker subnet 1 id"
 }
