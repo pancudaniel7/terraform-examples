@@ -8,11 +8,11 @@ terraform {
 provider "aws" {
   profile = "zeph"
   region  = var.region_master
-  alias   = "region_master"
+  alias   = "master"
 }
 
 provider "aws" {
   profile = "zeph"
   region  = var.region_worker
-  alias   = "region_worker"
+  alias   = "worker"
 }

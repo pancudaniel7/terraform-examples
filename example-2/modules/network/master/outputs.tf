@@ -12,3 +12,8 @@ output "subnet_master2_id" {
   value = aws_subnet.subnet_master_2.id
   description = "Subnet master2 id"
 }
+
+output "standard1_master_id" {
+  value = aws_security_group.standard1_master.id
+  description = "Standard1 security group id"
+}
