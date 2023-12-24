@@ -3,7 +3,7 @@ data "aws_availability_zones" "azs" {
 }
 
 resource "aws_vpc" "vpc_worker" {
-  provider   = aws.worker
+  provider   = aws
   cidr_block = "192.168.0.0/16"
 
   enable_dns_support   = true
@@ -15,7 +15,7 @@ resource "aws_vpc" "vpc_worker" {
 }
 
 resource "aws_internet_gateway" "igw_worker" {
-  provider = aws.worker
+  provider = aws
   vpc_id   = aws_vpc.vpc_worker.id
 
   tags = {
@@ -24,13 +24,13 @@ resource "aws_internet_gateway" "igw_worker" {
 }
 
 resource "aws_subnet" "subnet_worker_1" {
-  provider   = aws.worker
+  provider   = aws
   vpc_id     = aws_vpc.vpc_worker.id
   cidr_block = "192.168.1.0/24"
 }
 
 resource "aws_security_group" "standard1_worker" {
-  provider = aws.worker
+  provider = aws
   name        = "Standard1"
   description = "Standard1 security group"
   vpc_id      = var.security_group_standard1_vpc_id
@@ -55,3 +55,32 @@ resource "aws_security_group" "standard1_worker" {
     Name = var.security_group_standard1_name
   }
 }
+
+#resource "aws_route_table" "worker_routing_table" {
+#  provider   = aws.worker
+#  vpc_id     = var.vpc_worker_id
+#
+#  route {
+#    cidr_block = "0.0.0.0/0"
+#    gateway_id = var.igw_worker_id
+#  }
+#
+#  route {
+#    cidr_block = "10.0.1.0/24"
+#    vpc_peering_connection_id = aws_vpc_peering_connection.master_peering_connection.id
+#  }
+#
+#  lifecycle {
+#    ignore_changes = all
+#  }
+#
+#  tags = {
+#    Environment = var.env
+#  }
+#}
+
+#resource "aws_main_route_table_association" "worker_routing_table_association" {
+#  provider = aws.worker
+#  vpc_id = var.vpc_worker_id
+#  route_table_id = aws_route_table.worker_routing_table.id
+#}

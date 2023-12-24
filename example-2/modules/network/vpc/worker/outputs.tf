@@ -17,3 +17,8 @@ output "standard1_worker_id" {
   value = aws_security_group.standard1_worker.id
   description = "Standard1 security group id"
 }
+
+output "security_group_id" {
+  value = aws_security_group.standard1_worker.id
+  description = "Security group id"
+}

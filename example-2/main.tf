@@ -5,9 +5,9 @@ resource "aws_key_pair" "instances_global_keys" {
 }
 
 module "network_worker" {
-  source = "./modules/network/worker"
+  source = "./modules/network/vpc/worker"
   providers = {
-    aws.worker = aws.worker
+    aws = aws.worker
   }
 
   security_group_standard1_name = "standard1"
@@ -16,10 +16,9 @@ module "network_worker" {
 }
 
 module "network_master" {
-  source = "./modules/network/master"
+  source = "./modules/network/vpc/master"
   providers = {
-    aws.master = aws.master
-    aws.worker = aws.worker
+    aws = aws.master
   }
 
   env           = var.env
@@ -36,7 +35,6 @@ module "network_master" {
   ]
 }
 
-
 #module "master_instances" {
 #  source      = "./modules/ec2/standard"
 #  providers = {
@@ -50,10 +48,10 @@ module "network_master" {
 #  key_name    = aws_key_pair.instances_global_keys[var.region_master].key_name
 #
 #  subnet_id = module.network_master.subnet_master1_id
-#  security_group_ids = [module.master_security_groups.standard1_id]
+#  security_group_ids = [module.network_master.security_group_id]
 #
 #  depends_on = [
-#    module.master_security_groups
+#    module.network_master
 #  ]
 #}
 
@@ -70,10 +68,10 @@ module "network_master" {
 #  key_name    = aws_key_pair.instances_global_keys[var.region_worker].key_name
 #
 #  subnet_id = module.network_worker.subnet_worker1_id
-#  security_group_ids = [module.worker_security_groups.standard1_id]
+#  security_group_ids = [module.network_worker.security_group_id]
 #
 #  depends_on = [
-#    module.worker_security_groups
+#    module.network_worker
 #  ]
 #}
-#
+

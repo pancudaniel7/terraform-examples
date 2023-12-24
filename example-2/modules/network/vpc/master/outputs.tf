@@ -13,7 +13,12 @@ output "subnet_master2_id" {
   description = "Subnet master2 id"
 }
 
-output "standard1_master_id" {
-  value = aws_security_group.standard1_master.id
-  description = "Standard1 security group id"
-}
+#output "standard1_master_id" {
+#  value = aws_security_group.standard1_master.id
+#  description = "Standard1 security group id"
+#}
+#
+#output "security_group_id" {
+#  value = aws_security_group.standard1_master.id
+#  description = "Security group id"
+#}
